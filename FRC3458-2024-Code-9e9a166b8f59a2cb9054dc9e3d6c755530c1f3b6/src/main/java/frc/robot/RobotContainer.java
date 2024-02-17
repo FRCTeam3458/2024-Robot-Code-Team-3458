@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
 import frc.robot.subsystems.swerve.rev.RevSwerve;
 import frc.robot.subsystems.Rollers;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Flywheels;
 
 /**
@@ -38,6 +39,7 @@ public class RobotContainer {
     private final RevSwerve s_Swerve = new RevSwerve();
     private final Flywheels s_Flywheels = new Flywheels();
     private final Rollers s_Rollers = new Rollers();
+    private final Arm s_Arm = new Arm();
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -52,6 +54,9 @@ public class RobotContainer {
             )
         );
 
+        s_Flywheels.setDefaultCommand(s_Flywheels.StopFlywheels());
+        s_Rollers.setDefaultCommand(s_Rollers.StopDouble());
+
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -65,10 +70,19 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-        intake.onTrue(new InstantCommand(() -> s_Flywheels.IntakeCommand()
-        .andThen(s_Rollers.IntakeCommand())));
-        runFlywheel.onTrue(new InstantCommand(() -> s_Flywheels.RunFlywheels()));
-        shootRoller.onTrue(new InstantCommand(() -> s_Rollers.Shoot()));
+
+        /* Operator Buttons */
+       /*  intake.onTrue(s_Flywheels.IntakeCommand()
+        .andThen(s_Rollers.IntakeCommand())); */
+       /* intake.onTrue(s_Flywheels.IntakeCommand());
+        intake.onTrue(s_Rollers.IntakeCommand());
+        intake.onFalse(s_Flywheels.StopFlywheels());
+        intake.onFalse(s_Rollers.StopDouble());
+        runFlywheel.onTrue(s_Flywheels.RunFlywheels());
+        runFlywheel.onFalse(s_Flywheels.StopFlywheels()); */
+        runFlywheel.onTrue(s_Arm.armToIntakeCommand());
+        runFlywheel.onFalse(s_Arm.stopArm());
+        
     }
 
     /**
