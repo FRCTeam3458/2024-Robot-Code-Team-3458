@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.commands.*;
 import frc.robot.subsystems.swerve.rev.RevSwerve;
+import frc.robot.subsystems.Rollers;
+import frc.robot.subsystems.Flywheels;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -19,6 +21,7 @@ import frc.robot.subsystems.swerve.rev.RevSwerve;
 public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
+    private final Joystick operator = new Joystick(1);
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -27,9 +30,14 @@ public class RobotContainer {
 
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
+    private final JoystickButton intake = new JoystickButton(operator, 1);
+    private final JoystickButton runFlywheel = new JoystickButton(operator, 2);
+    private final JoystickButton shootRoller = new JoystickButton(operator, 4);
 
     /* Subsystems */
     private final RevSwerve s_Swerve = new RevSwerve();
+    private final Flywheels s_Flywheels = new Flywheels();
+    private final Rollers s_Rollers = new Rollers();
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -57,6 +65,10 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+        intake.onTrue(new InstantCommand(() -> s_Flywheels.IntakeCommand()
+        .andThen(s_Rollers.IntakeCommand())));
+        runFlywheel.onTrue(new InstantCommand(() -> s_Flywheels.RunFlywheels()));
+        shootRoller.onTrue(new InstantCommand(() -> s_Rollers.Shoot()));
     }
 
     /**
