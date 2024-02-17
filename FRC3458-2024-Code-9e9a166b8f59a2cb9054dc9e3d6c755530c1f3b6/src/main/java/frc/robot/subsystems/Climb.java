@@ -13,7 +13,7 @@ public class Climb extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public Climb() {}
 
-  private final Victor climb = new Victor(7);
+  private final Victor climb = new Victor(8);
 
 public Command Extend() {
     return runOnce(() -> climb.set(1))
