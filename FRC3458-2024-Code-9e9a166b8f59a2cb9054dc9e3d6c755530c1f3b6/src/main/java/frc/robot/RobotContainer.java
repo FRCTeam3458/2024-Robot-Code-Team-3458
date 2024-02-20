@@ -73,11 +73,11 @@ public class RobotContainer {
 
         /* Operator Buttons */
        /*   intake.onTrue(s_Flywheels.IntakeCommand());
-        intake.onFalse(s_Flywheels.StopFlywheels()); */
+        intake.onFalse(s_Flywheels.StopFlywheels()); 
         intake.onTrue(s_Flywheels.IntakeCommand());
         intake.onTrue(s_Rollers.IntakeCommand());
         intake.onFalse(s_Flywheels.StopFlywheels());
-        intake.onFalse(s_Rollers.StopDouble()); 
+        intake.onFalse(s_Rollers.StopDouble()); */
 /* 
         shootRoller.onTrue(s_Rollers.Shoot());
         shootRoller.onFalse(s_Rollers.StopDouble());
@@ -89,11 +89,14 @@ public class RobotContainer {
         intake.onFalse(s_Rollers.StopDouble()); &*/
 
 
-      /*   runFlywheel.whileTrue(s_Arm.armToSpeakerCommand());
+        runFlywheel.whileTrue(s_Arm.armToSpeakerCommand());
         runFlywheel.onFalse(s_Arm.stopArm()); 
 
         intake.whileTrue(s_Arm.armToIntakeCommand());
-        intake.onFalse(s_Arm.stopArm()); */
+        intake.onFalse(s_Arm.stopArm()); 
+
+        shootRoller.onTrue(s_Arm.runArm());
+        shootRoller.onFalse(s_Arm.stopArm());
         
     }
 
