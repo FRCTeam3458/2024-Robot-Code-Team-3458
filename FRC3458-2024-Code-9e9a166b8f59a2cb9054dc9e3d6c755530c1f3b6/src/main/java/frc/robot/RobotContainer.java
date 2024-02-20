@@ -54,8 +54,8 @@ public class RobotContainer {
             )
         );
 
-        s_Flywheels.setDefaultCommand(s_Flywheels.StopFlywheels());
-        s_Rollers.setDefaultCommand(s_Rollers.StopDouble());
+       /*  s_Flywheels.setDefaultCommand(s_Flywheels.StopFlywheels());
+        s_Rollers.setDefaultCommand(s_Rollers.StopDouble()); */
 
         // Configure the button bindings
         configureButtonBindings();
@@ -77,11 +77,23 @@ public class RobotContainer {
        /* intake.onTrue(s_Flywheels.IntakeCommand());
         intake.onTrue(s_Rollers.IntakeCommand());
         intake.onFalse(s_Flywheels.StopFlywheels());
-        intake.onFalse(s_Rollers.StopDouble());
+        intake.onFalse(s_Rollers.StopDouble()); */
+/* 
+        shootRoller.onTrue(s_Rollers.Shoot());
+        shootRoller.onFalse(s_Rollers.StopDouble());
+
         runFlywheel.onTrue(s_Flywheels.RunFlywheels());
-        runFlywheel.onFalse(s_Flywheels.StopFlywheels()); */
-        runFlywheel.onTrue(s_Arm.armToIntakeCommand());
-        runFlywheel.onFalse(s_Arm.stopArm());
+        runFlywheel.onFalse(s_Flywheels.StopFlywheels());
+
+        intake.onTrue(s_Rollers.IntakeCommand());
+        intake.onFalse(s_Rollers.StopDouble()); &*/
+
+
+        runFlywheel.whileTrue(s_Arm.armToSpeakerCommand());
+        runFlywheel.onFalse(s_Arm.stopArm()); 
+
+        intake.whileTrue(s_Arm.armToIntakeCommand());
+        intake.onFalse(s_Arm.stopArm());
         
     }
 
