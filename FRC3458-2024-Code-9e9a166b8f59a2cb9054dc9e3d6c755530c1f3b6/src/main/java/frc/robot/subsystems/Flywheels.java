@@ -22,8 +22,8 @@ public class Flywheels extends SubsystemBase {
    * @return a command
    */
   public Command IntakeCommand() {
-    return runOnce(() -> upperRoller.set(-0.5))
-          .andThen(run(() -> bottomRoller.set(-0.5)))
+    return runOnce(() -> upperRoller.set(-1))
+          .andThen(run(() -> bottomRoller.set(-1)))
           .withName("Intake Flywheels"); 
   }
 
