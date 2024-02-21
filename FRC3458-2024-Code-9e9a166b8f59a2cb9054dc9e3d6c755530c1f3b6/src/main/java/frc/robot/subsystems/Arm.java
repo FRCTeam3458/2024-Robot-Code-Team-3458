@@ -21,7 +21,7 @@ public class Arm extends SubsystemBase {
   private final CANSparkMax armMotor = new CANSparkMax(13, MotorType.kBrushless);
 
   private final RelativeEncoder armEncoder = armMotor.getEncoder();
-  private final PIDController armController = new PIDController(100.8, 0, 0);
+  private final PIDController armController = new PIDController(1.0, 0, 0);
 
   /**
    * Example command factory method.

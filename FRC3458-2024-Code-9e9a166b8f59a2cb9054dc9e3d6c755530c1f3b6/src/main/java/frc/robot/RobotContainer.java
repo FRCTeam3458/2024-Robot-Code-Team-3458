@@ -1,13 +1,10 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -33,7 +30,6 @@ public class RobotContainer {
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
     private final int strafeAxis = XboxController.Axis.kLeftX.value;
-    private final int rotationAxis = XboxController.Axis.kRightX.value;
 
     /* Driver Buttons */
     //private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
@@ -116,6 +112,7 @@ public class RobotContainer {
         temp3.onTrue(s_Arm.armToAmpCommand());
 
         
+    
        intake.onTrue(s_Flywheels.IntakeCommand());
        intake.onFalse(s_Flywheels.StopFlywheels());
         
