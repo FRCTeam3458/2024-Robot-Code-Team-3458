@@ -7,12 +7,17 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 
 
 public class Rollers extends SubsystemBase {
+  //private final DigitalInput noteSensor2 = new DigitalInput(1);
+    
+
   /** Creates a new ExampleSubsystem. */
   //public OuterIntake() {}
    private final VictorSPX doubleRoller = new VictorSPX(16);
@@ -22,8 +27,9 @@ public class Rollers extends SubsystemBase {
    *
    * @return a command
    */
+ // public final Trigger hasNote2 = new Trigger(noteSensor2::get);
   public Command IntakeCommand() {
-    return runOnce(() -> doubleRoller.set(VictorSPXControlMode.PercentOutput, 1.0))
+    return run(() -> doubleRoller.set(VictorSPXControlMode.PercentOutput, 1.0))
           .withName("Intake Rollers"); 
   }
   public Command Shoot() {

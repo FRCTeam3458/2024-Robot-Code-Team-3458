@@ -1,10 +1,14 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.commands.*;
@@ -24,6 +28,8 @@ public class RobotContainer {
     private final Joystick driver = new Joystick(0);
     private final Joystick operator = new Joystick(1);
 
+    //private final DigitalInput noteSensor = new DigitalInput(1);
+
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
     private final int strafeAxis = XboxController.Axis.kLeftX.value;
@@ -34,6 +40,7 @@ public class RobotContainer {
     private final JoystickButton intake = new JoystickButton(operator, 1);
     private final JoystickButton runFlywheel = new JoystickButton(operator, 2);
     private final JoystickButton shootRoller = new JoystickButton(operator, 4);
+    private final JoystickButton temp3 = new JoystickButton(operator, 3);
 
     /* Subsystems */
     private final RevSwerve s_Swerve = new RevSwerve();
@@ -54,8 +61,8 @@ public class RobotContainer {
             )
         );
 
-       /*  s_Flywheels.setDefaultCommand(s_Flywheels.StopFlywheels());
-        s_Rollers.setDefaultCommand(s_Rollers.StopDouble()); */
+         s_Flywheels.setDefaultCommand(s_Flywheels.StopFlywheels());
+      // s_Rollers.setDefaultCommand(s_Rollers.StopDouble()); 
 
         // Configure the button bindings
         configureButtonBindings();
@@ -78,17 +85,21 @@ public class RobotContainer {
         intake.onTrue(s_Rollers.IntakeCommand());
         intake.onFalse(s_Flywheels.StopFlywheels());
         intake.onFalse(s_Rollers.StopDouble()); */
-/* 
-        shootRoller.onTrue(s_Rollers.Shoot());
+
+        shootRoller.whileTrue(s_Rollers.Shoot());
         shootRoller.onFalse(s_Rollers.StopDouble());
 
-        runFlywheel.onTrue(s_Flywheels.RunFlywheels());
+        runFlywheel.onTrue(new ParallelCommandGroup((s_Flywheels.RunFlywheels().alongWith(new WaitCommand(1).andThen(s_Rollers.Shoot())))));
         runFlywheel.onFalse(s_Flywheels.StopFlywheels());
+        runFlywheel.onFalse(s_Rollers.StopDouble());
 
-        intake.onTrue(s_Rollers.IntakeCommand());
-        intake.onFalse(s_Rollers.StopDouble()); &*/
+        temp3.onTrue(s_Rollers.IntakeCommand());
+        temp3.onFalse(s_Rollers.StopDouble());
 
+       // intake.onTrue(s_Rollers.IntakeCommand());
+       // intake.onFalse(s_Rollers.StopDouble()); 
 
+/* 
         runFlywheel.whileTrue(s_Arm.armToSpeakerCommand());
         runFlywheel.onFalse(s_Arm.stopArm()); 
 
@@ -96,7 +107,23 @@ public class RobotContainer {
         intake.onFalse(s_Arm.stopArm()); 
 
         shootRoller.onTrue(s_Arm.runArm());
-        shootRoller.onFalse(s_Arm.stopArm());
+        shootRoller.onFalse(s_Arm.stopArm()); */
+
+        
+       intake.onTrue(s_Flywheels.IntakeCommand());
+       intake.onFalse(s_Flywheels.StopFlywheels());
+        
+        s_Flywheels.hasNote.onFalse(s_Flywheels.IntakeCommand());
+        s_Flywheels.hasNote.onFalse(s_Rollers.IntakeCommand());
+        s_Flywheels.hasNote.onTrue(s_Flywheels.StopFlywheels());
+        s_Flywheels.hasNote.onTrue(s_Rollers.StopDouble());
+
+
+        
+        
+        
+       
+        
         
     }
 
@@ -108,4 +135,5 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         return null;
     }
+    
 }
