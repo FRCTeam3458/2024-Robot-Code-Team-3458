@@ -4,13 +4,13 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 
 
@@ -43,6 +43,10 @@ public class Rollers extends SubsystemBase {
   public Command StopDouble() {
     return runOnce(() -> doubleRoller.set(VictorSPXControlMode.PercentOutput, 0))
             .withName("Stop Double Rollers");
+  }
+  public Command setRollerSpeed(double speed) {
+    return runOnce(() -> doubleRoller.set(VictorSPXControlMode.PercentOutput, speed))
+            .withName("Set Roller Speed");
   }
 
 /*   @Override

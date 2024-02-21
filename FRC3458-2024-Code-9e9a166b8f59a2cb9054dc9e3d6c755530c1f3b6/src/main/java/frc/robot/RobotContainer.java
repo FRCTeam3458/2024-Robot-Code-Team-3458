@@ -36,11 +36,16 @@ public class RobotContainer {
     private final int rotationAxis = XboxController.Axis.kRightX.value;
 
     /* Driver Buttons */
-    private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
+    //private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton intake = new JoystickButton(operator, 1);
     private final JoystickButton runFlywheel = new JoystickButton(operator, 2);
     private final JoystickButton shootRoller = new JoystickButton(operator, 4);
-    private final JoystickButton temp3 = new JoystickButton(operator, 3);
+    private final JoystickButton ampScore = new JoystickButton(operator, 3);
+
+    private final JoystickButton temp1 = new JoystickButton(driver, 1);
+    private final JoystickButton temp2 = new JoystickButton(driver, 2);
+    private final JoystickButton temp3 = new JoystickButton(driver, 3);
+    private final JoystickButton temp4 = new JoystickButton(driver, 4);
 
     /* Subsystems */
     private final RevSwerve s_Swerve = new RevSwerve();
@@ -63,6 +68,7 @@ public class RobotContainer {
 
          s_Flywheels.setDefaultCommand(s_Flywheels.StopFlywheels());
       // s_Rollers.setDefaultCommand(s_Rollers.StopDouble()); 
+        s_Rollers.setDefaultCommand(s_Rollers.setRollerSpeed(0));
 
         // Configure the button bindings
         configureButtonBindings();
@@ -76,7 +82,7 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+        //zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
         /* Operator Buttons */
        /*   intake.onTrue(s_Flywheels.IntakeCommand());
@@ -86,28 +92,28 @@ public class RobotContainer {
         intake.onFalse(s_Flywheels.StopFlywheels());
         intake.onFalse(s_Rollers.StopDouble()); */
 
-        shootRoller.whileTrue(s_Rollers.Shoot());
-        shootRoller.onFalse(s_Rollers.StopDouble());
-
         runFlywheel.onTrue(new ParallelCommandGroup((s_Flywheels.RunFlywheels().alongWith(new WaitCommand(1).andThen(s_Rollers.Shoot())))));
         runFlywheel.onFalse(s_Flywheels.StopFlywheels());
         runFlywheel.onFalse(s_Rollers.StopDouble());
 
-        temp3.onTrue(s_Rollers.IntakeCommand());
-        temp3.onFalse(s_Rollers.StopDouble());
+        ampScore.onTrue(s_Rollers.IntakeCommand());
+        ampScore.onFalse(s_Rollers.StopDouble());
 
        // intake.onTrue(s_Rollers.IntakeCommand());
        // intake.onFalse(s_Rollers.StopDouble()); 
 
-/* 
-        runFlywheel.whileTrue(s_Arm.armToSpeakerCommand());
-        runFlywheel.onFalse(s_Arm.stopArm()); 
 
-        intake.whileTrue(s_Arm.armToIntakeCommand());
-        intake.onFalse(s_Arm.stopArm()); 
+        temp4.whileTrue(s_Arm.armToSpeakerCommand());
+        temp4.onFalse(s_Arm.stopArm()); 
 
-        shootRoller.onTrue(s_Arm.runArm());
-        shootRoller.onFalse(s_Arm.stopArm()); */
+        temp2.whileTrue(s_Arm.armToIntakeCommand());
+        temp2.onFalse(s_Arm.stopArm()); 
+
+        temp1.onTrue(s_Arm.runArm());
+        temp1.onFalse(s_Arm.stopArm()); 
+        
+        temp3.onTrue(s_Arm.armToAmpCommand());
+        temp3.onTrue(s_Arm.armToAmpCommand());
 
         
        intake.onTrue(s_Flywheels.IntakeCommand());
