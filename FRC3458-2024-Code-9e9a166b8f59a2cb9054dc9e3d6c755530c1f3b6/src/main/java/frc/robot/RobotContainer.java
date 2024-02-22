@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -94,6 +95,23 @@ public class RobotContainer {
 
         ampScore.onTrue(s_Rollers.IntakeCommand());
         ampScore.onFalse(s_Rollers.StopDouble());
+
+        // shootRoller.onTrue(new ParallelCommandGroup(s_Flywheels.RunFlywheels()
+        //                         .alongWith(s_Arm.armToSpeakerCommand()
+        //                         .andThen(s_Rollers.Shoot()))));
+        // shootRoller.onFalse(s_Arm.stopArm());
+        // shootRoller.onFalse(s_Rollers.StopDouble());
+        // shootRoller.onFalse(s_Flywheels.StopFlywheels());
+
+        // runFlywheel.onTrue(new SequentialCommandGroup(s_Arm.armToAmpCommand()
+        //                         .andThen(s_Rollers.Shoot())));
+
+        // runFlywheel.onFalse(s_Arm.stopArm());
+        // runFlywheel.onFalse(s_Rollers.StopDouble());
+       
+                        
+
+
 
        // intake.onTrue(s_Rollers.IntakeCommand());
        // intake.onFalse(s_Rollers.StopDouble()); 

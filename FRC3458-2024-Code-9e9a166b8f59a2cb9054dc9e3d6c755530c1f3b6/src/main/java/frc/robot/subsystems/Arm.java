@@ -21,7 +21,7 @@ public class Arm extends SubsystemBase {
   private final CANSparkMax armMotor = new CANSparkMax(13, MotorType.kBrushless);
 
   private final RelativeEncoder armEncoder = armMotor.getEncoder();
-  private final PIDController armController = new PIDController(1.0, 0, 0);
+  private final PIDController armController = new PIDController(2, 0, 0);
 
   /**
    * Example command factory method.
@@ -30,19 +30,19 @@ public class Arm extends SubsystemBase {
    */
   public Command armToAmpCommand() {
     return run(() -> 
-      armMotor.set(armController.calculate(armEncoder.getPosition(), 0)))
+      armMotor.set(armController.calculate(armEncoder.getPosition(), -0.95)))
           .withName("Arm to Amp");
         }
     
   public Command armToSpeakerCommand() {
       return run(() -> 
-        armMotor.set(armController.calculate(armEncoder.getPosition(), 0.1)))
+        armMotor.set(armController.calculate(armEncoder.getPosition(), -0.85)))
             .withName("Arm to Speaker");
         }
 
   public Command armToIntakeCommand() {
         return run(() -> 
-          armMotor.set(armController.calculate(armEncoder.getPosition(), 0.6)))
+          armMotor.set(armController.calculate(armEncoder.getPosition(), 0.0)))
               .withName("Arm to Intake");
         }
 
