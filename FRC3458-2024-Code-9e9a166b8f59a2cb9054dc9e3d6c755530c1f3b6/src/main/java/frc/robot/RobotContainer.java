@@ -53,7 +53,7 @@ public class RobotContainer {
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
-        s_Swerve.setDefaultCommand(
+          s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
                 () -> driver.getRawAxis(translationAxis), 
@@ -61,11 +61,11 @@ public class RobotContainer {
                 () -> -driver.getRawAxis(2), 
                 () -> false
             )
-        );
+        ); 
 
-         s_Flywheels.setDefaultCommand(s_Flywheels.StopFlywheels());
+         //s_Flywheels.setDefaultCommand(s_Flywheels.StopFlywheels());
       // s_Rollers.setDefaultCommand(s_Rollers.StopDouble()); 
-        s_Rollers.setDefaultCommand(s_Rollers.setRollerSpeed(0));
+       // s_Rollers.setDefaultCommand(s_Rollers.setRollerSpeed(0));
 
         // Configure the button bindings
         configureButtonBindings();
@@ -89,11 +89,12 @@ public class RobotContainer {
         intake.onFalse(s_Flywheels.StopFlywheels());
         intake.onFalse(s_Rollers.StopDouble()); */
 
-        runFlywheel.onTrue(new ParallelCommandGroup((s_Flywheels.RunFlywheels().alongWith(new WaitCommand(1).andThen(s_Rollers.Shoot())))));
+        runFlywheel.onTrue(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(2).andThen(s_Rollers.Shoot())))));
         runFlywheel.onFalse(s_Flywheels.StopFlywheels());
         runFlywheel.onFalse(s_Rollers.StopDouble());
+        runFlywheel.onFalse(s_Arm.stopArm());
 
-        ampScore.onTrue(s_Rollers.IntakeCommand());
+        ampScore.onTrue(new ParallelCommandGroup(s_Arm.armToAmpCommand().alongWith(new WaitCommand(1.7).andThen(s_Rollers.IntakeCommand()))));
         ampScore.onFalse(s_Rollers.StopDouble());
 
         // shootRoller.onTrue(new ParallelCommandGroup(s_Flywheels.RunFlywheels()
@@ -120,10 +121,10 @@ public class RobotContainer {
         temp4.whileTrue(s_Arm.armToSpeakerCommand());
         temp4.onFalse(s_Arm.stopArm()); 
 
-        temp2.whileTrue(s_Arm.armToIntakeCommand());
+        temp2.whileTrue(new ParallelCommandGroup((s_Arm.armToIntakeCommand1())));//.alongWith(new WaitCommand(2)).andThen(s_Arm.armtoIntakeCommand2())));
         temp2.onFalse(s_Arm.stopArm()); 
 
-        temp1.onTrue(s_Arm.runArm());
+        temp1.onTrue(s_Arm.armtoIntakeCommand2());
         temp1.onFalse(s_Arm.stopArm()); 
         
         temp3.onTrue(s_Arm.armToAmpCommand());
