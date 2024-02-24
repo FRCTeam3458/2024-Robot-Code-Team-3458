@@ -8,11 +8,13 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*;
 import frc.robot.subsystems.swerve.rev.RevSwerve;
 import frc.robot.subsystems.Rollers;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Flywheels;
 
 /**
@@ -44,11 +46,15 @@ public class RobotContainer {
     private final JoystickButton temp3 = new JoystickButton(driver, 3);
     private final JoystickButton temp4 = new JoystickButton(driver, 4);
 
+    private final POVButton povUp = new POVButton(operator, 0);
+    private final POVButton povDown = new POVButton(operator, 180);
+
     /* Subsystems */
     private final RevSwerve s_Swerve = new RevSwerve();
     private final Flywheels s_Flywheels = new Flywheels();
     private final Rollers s_Rollers = new Rollers();
     private final Arm s_Arm = new Arm();
+    private final Climb s_Climb = new Climb();
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -96,6 +102,12 @@ public class RobotContainer {
 
         ampScore.onTrue(new ParallelCommandGroup(s_Arm.armToAmpCommand().alongWith(new WaitCommand(1.7).andThen(s_Rollers.IntakeCommand()))));
         ampScore.onFalse(s_Rollers.StopDouble());
+
+        povUp.onTrue(s_Climb.Extend());
+        povUp.onFalse(s_Climb.StopClimb());
+
+        povDown.onTrue(s_Climb.Retract());
+        povDown.onFalse(s_Climb.StopClimb());
 
         // shootRoller.onTrue(new ParallelCommandGroup(s_Flywheels.RunFlywheels()
         //                         .alongWith(s_Arm.armToSpeakerCommand()
