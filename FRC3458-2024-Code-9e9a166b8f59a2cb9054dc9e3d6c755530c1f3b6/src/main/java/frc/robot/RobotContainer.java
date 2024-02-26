@@ -8,11 +8,13 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*;
 import frc.robot.subsystems.swerve.rev.RevSwerve;
 import frc.robot.subsystems.Rollers;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Flywheels;
 
 /**
@@ -44,16 +46,20 @@ public class RobotContainer {
     private final JoystickButton temp3 = new JoystickButton(driver, 3);
     private final JoystickButton temp4 = new JoystickButton(driver, 4);
 
+    private final POVButton povUp = new POVButton(operator, 0);
+    private final POVButton povDown = new POVButton(operator, 180);
+
     /* Subsystems */
     private final RevSwerve s_Swerve = new RevSwerve();
     private final Flywheels s_Flywheels = new Flywheels();
     private final Rollers s_Rollers = new Rollers();
     private final Arm s_Arm = new Arm();
+    private final Climb s_Climb = new Climb();
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
-        s_Swerve.setDefaultCommand(
+          s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
                 () -> driver.getRawAxis(translationAxis), 
@@ -61,11 +67,11 @@ public class RobotContainer {
                 () -> -driver.getRawAxis(2), 
                 () -> false
             )
-        );
+        ); 
 
-         s_Flywheels.setDefaultCommand(s_Flywheels.StopFlywheels());
+         //s_Flywheels.setDefaultCommand(s_Flywheels.StopFlywheels());
       // s_Rollers.setDefaultCommand(s_Rollers.StopDouble()); 
-        s_Rollers.setDefaultCommand(s_Rollers.setRollerSpeed(0));
+       // s_Rollers.setDefaultCommand(s_Rollers.setRollerSpeed(0));
 
         // Configure the button bindings
         configureButtonBindings();
@@ -89,12 +95,19 @@ public class RobotContainer {
         intake.onFalse(s_Flywheels.StopFlywheels());
         intake.onFalse(s_Rollers.StopDouble()); */
 
-        runFlywheel.onTrue(new ParallelCommandGroup((s_Flywheels.RunFlywheels().alongWith(new WaitCommand(1).andThen(s_Rollers.Shoot())))));
+        runFlywheel.onTrue(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(2).andThen(s_Rollers.Shoot())))));
         runFlywheel.onFalse(s_Flywheels.StopFlywheels());
         runFlywheel.onFalse(s_Rollers.StopDouble());
+        runFlywheel.onFalse(s_Arm.stopArm());
 
-        ampScore.onTrue(s_Rollers.IntakeCommand());
+        ampScore.onTrue(new ParallelCommandGroup(s_Arm.armToAmpCommand().alongWith(new WaitCommand(1.7).andThen(s_Rollers.IntakeCommand()))));
         ampScore.onFalse(s_Rollers.StopDouble());
+
+        povUp.onTrue(s_Climb.Extend());
+        povUp.onFalse(s_Climb.StopClimb());
+
+        povDown.onTrue(s_Climb.Retract());
+        povDown.onFalse(s_Climb.StopClimb());
 
         // shootRoller.onTrue(new ParallelCommandGroup(s_Flywheels.RunFlywheels()
         //                         .alongWith(s_Arm.armToSpeakerCommand()
@@ -120,10 +133,10 @@ public class RobotContainer {
         temp4.whileTrue(s_Arm.armToSpeakerCommand());
         temp4.onFalse(s_Arm.stopArm()); 
 
-        temp2.whileTrue(s_Arm.armToIntakeCommand());
+        temp2.whileTrue(new ParallelCommandGroup((s_Arm.armToIntakeCommand1())));//.alongWith(new WaitCommand(2)).andThen(s_Arm.armtoIntakeCommand2())));
         temp2.onFalse(s_Arm.stopArm()); 
 
-        temp1.onTrue(s_Arm.runArm());
+        temp1.onTrue(s_Arm.armtoIntakeCommand2());
         temp1.onFalse(s_Arm.stopArm()); 
         
         temp3.onTrue(s_Arm.armToAmpCommand());

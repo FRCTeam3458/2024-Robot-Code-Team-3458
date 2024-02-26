@@ -5,10 +5,13 @@
 package frc.robot.subsystems;
 
 
+import java.util.function.BooleanSupplier;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,8 +24,10 @@ public class Arm extends SubsystemBase {
   private final CANSparkMax armMotor = new CANSparkMax(13, MotorType.kBrushless);
 
   private final RelativeEncoder armEncoder = armMotor.getEncoder();
-  private final PIDController armController = new PIDController(2, 0, 0);
+  private final PIDController armController = new PIDController(4, 0, 0.01);
+  private final PIDController armController2 = new PIDController(1, 0, 0.06);
 
+  
   /**
    * Example command factory method.
    *
@@ -30,21 +35,28 @@ public class Arm extends SubsystemBase {
    */
   public Command armToAmpCommand() {
     return run(() -> 
-      armMotor.set(armController.calculate(armEncoder.getPosition(), -0.95)))
+      armMotor.set(armController.calculate(armEncoder.getPosition(), -1.1)))
           .withName("Arm to Amp");
         }
     
   public Command armToSpeakerCommand() {
       return run(() -> 
-        armMotor.set(armController.calculate(armEncoder.getPosition(), -0.85)))
+        armMotor.set(armController.calculate(armEncoder.getPosition(), -1)))
+          .withTimeout(2)
             .withName("Arm to Speaker");
         }
 
-  public Command armToIntakeCommand() {
+  public Command armToIntakeCommand1() {
         return run(() -> 
-          armMotor.set(armController.calculate(armEncoder.getPosition(), 0.0)))
-              .withName("Arm to Intake");
+          armMotor.set(armController2.calculate(armEncoder.getPosition(), -0.12)))
+            //.withTimeout(1.2)
+              .withName("Arm to Intake 1");
         }
+  public Command armtoIntakeCommand2() {
+      return run(() ->
+        armMotor.set(armController2.calculate(armEncoder.getPosition(), -0.05)))
+        .withName("Arm to Intake 2");
+  }
 
   public Command stopArm() { 
       return runOnce(() -> armMotor.set(0.0))
@@ -54,12 +66,17 @@ public class Arm extends SubsystemBase {
       return runOnce(() -> armMotor.set(-1))
       .withName("Stop Arm");
   } 
+  public boolean atSetpoint() {
+    return armController2.atSetpoint();
+  }
 
 
   @Override
   public void periodic() {
+    //armController2.setTolerance(0.001);
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Arm Encoder", armEncoder.getPosition());
-    SmartDashboard.putNumber("PID Output", armController.calculate(armEncoder.getPosition(), 0.1));
+    SmartDashboard.putNumber("PID Output IntakePOS", armController2.calculate(armEncoder.getPosition(), -0.1));
+    SmartDashboard.putNumber("PID Output SpeakerPOS", armController.calculate(armEncoder.getPosition(), -0.8));
   }
 }
