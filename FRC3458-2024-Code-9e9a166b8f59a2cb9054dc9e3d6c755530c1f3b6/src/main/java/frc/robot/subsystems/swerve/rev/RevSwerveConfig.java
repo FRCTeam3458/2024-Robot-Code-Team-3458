@@ -1,8 +1,7 @@
 package frc.robot.subsystems.swerve.rev;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
-//import com.ctre.phoenix.sensors.SensorInitializationStrategy;
-//import com.ctre.phoenix.sensors.SensorTimeBase;
+import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -110,10 +109,6 @@ public class RevSwerveConfig
     public RevSwerveConfig()
     {
         canCoderConfig = new CANcoderConfiguration();
-        //canCoderConfig.AbsoluteSensorRangeValue = AbsoluteSensorRangeValue.Unsigned_0To1;
-        //canCoderConfig.SensorDirection = canCoderInvert;
-        //canCoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
-        //canCoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
     }
 }
 
