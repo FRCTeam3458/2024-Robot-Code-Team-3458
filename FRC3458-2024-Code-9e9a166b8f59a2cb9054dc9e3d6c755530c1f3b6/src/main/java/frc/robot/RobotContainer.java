@@ -66,7 +66,7 @@ public class RobotContainer {
                 s_Swerve, 
                 () -> driver.getRawAxis(translationAxis), 
                 () -> driver.getRawAxis(strafeAxis), 
-                () -> -driver.getRawAxis(2), 
+                () -> driver.getRawAxis(2), 
                 () -> false
             )
         ); 
@@ -119,12 +119,12 @@ public class RobotContainer {
                 ));
         intake.onFalse(s_Arm.stopArm()); 
 
-       
+       /* 
         
         s_Flywheels.hasNote.onFalse(s_Flywheels.IntakeCommand());
         s_Flywheels.hasNote.onFalse(s_Rollers.IntakeCommand());
         s_Flywheels.hasNote.onTrue(s_Flywheels.StopFlywheels());
-        s_Flywheels.hasNote.onTrue(s_Rollers.StopDouble());
+        s_Flywheels.hasNote.onTrue(s_Rollers.StopDouble()); */
 
 
         

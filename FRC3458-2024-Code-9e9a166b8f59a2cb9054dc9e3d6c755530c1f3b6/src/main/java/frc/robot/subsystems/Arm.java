@@ -35,13 +35,14 @@ public class Arm extends SubsystemBase {
    */
   public Command armToAmpCommand() {
     return run(() -> 
-      armMotor.set(armController.calculate(armEncoder.getPosition(), -1)))
+      armMotor.set(armController.calculate(armEncoder.getPosition(), -0.75)))
           .withName("Arm to Amp");
         }
     
   public Command armToSpeakerCommand() {
       return run(() -> 
-        armMotor.set(armController.calculate(armEncoder.getPosition(), -0.8)))
+        armMotor.set(armController.calculate(armEncoder.getPosition(), -0.71
+         )))
           .withTimeout(2)
             .withName("Arm to Speaker");
         }
@@ -51,7 +52,7 @@ public class Arm extends SubsystemBase {
           armMotor.set(armController2.calculate(armEncoder.getPosition(), -0.12)))
               .withTimeout(1.2)
               .withName("Arm to Intake 1");
-        }
+        } 
   public Command armtoIntakeCommand2() {
       return run(() ->
         armMotor.set(armController2.calculate(armEncoder.getPosition(), -0.05)))

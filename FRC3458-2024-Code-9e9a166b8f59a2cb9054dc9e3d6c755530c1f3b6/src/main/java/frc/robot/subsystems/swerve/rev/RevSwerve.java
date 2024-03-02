@@ -30,7 +30,7 @@ public class RevSwerve extends SubsystemBase {
 
 
     public SwerveDriveOdometry swerveOdometry;
-    public SwerveDrivePoseEstimator botPose;
+public SwerveDrivePoseEstimator botPose;
     public SwerveModule[] mSwerveMods;
     public AHRS gyro;
 
@@ -50,7 +50,7 @@ public class RevSwerve extends SubsystemBase {
         };
 
         swerveOdometry = new SwerveDriveOdometry(RevSwerveConfig.swerveKinematics, getYaw(), getModulePositions());
-        botPose = new SwerveDrivePoseEstimator(RevSwerveConfig.swerveKinematics, getYaw(), getModulePositions(), getPose());
+botPose = new SwerveDrivePoseEstimator(RevSwerveConfig.swerveKinematics, getYaw(), getModulePositions(), getPose());
         zeroGyro();
 
     }
