@@ -11,12 +11,14 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -24,6 +26,7 @@ public class RevSwerve extends SubsystemBase {
 
 
     public SwerveDriveOdometry swerveOdometry;
+    public SwerveDrivePoseEstimator botPose;
     public SwerveModule[] mSwerveMods;
     public AHRS gyro;
 
@@ -43,6 +46,7 @@ public class RevSwerve extends SubsystemBase {
         };
 
         swerveOdometry = new SwerveDriveOdometry(RevSwerveConfig.swerveKinematics, getYaw(), getModulePositions());
+        botPose = new SwerveDrivePoseEstimator(RevSwerveConfig.swerveKinematics, getYaw(), getModulePositions(), getPose());
         zeroGyro();
 
     }
@@ -133,6 +137,15 @@ public class RevSwerve extends SubsystemBase {
 
     public Rotation2d getYaw() {
         return (RevSwerveConfig.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getYaw()) : Rotation2d.fromDegrees(gyro.getYaw());
+    }
+
+    public Pose2d getVisionPose(){
+        return getPose();
+    }
+
+    public SwerveDrivePoseEstimator addVisionPose() {
+        botPose.addVisionMeasurement(getPose(), Timer.getFPGATimestamp());
+        return botPose;
     }
 
     @Override
