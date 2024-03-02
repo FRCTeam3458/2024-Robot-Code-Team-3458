@@ -19,7 +19,7 @@ public class Flywheels extends SubsystemBase {
    private final CANSparkMax bottomRoller = new CANSparkMax(9, MotorType.kBrushless);
    private final CANSparkMax upperRoller = new CANSparkMax(10, MotorType.kBrushless);
 
-   private final DigitalInput noteSensor = new DigitalInput(1);
+   private final DigitalInput noteSensor = new DigitalInput(0);
 
 
 

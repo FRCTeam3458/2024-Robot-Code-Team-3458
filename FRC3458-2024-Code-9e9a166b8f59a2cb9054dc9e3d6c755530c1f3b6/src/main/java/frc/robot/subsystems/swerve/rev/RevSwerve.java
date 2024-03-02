@@ -17,6 +17,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -156,5 +160,8 @@ public class RevSwerve extends SubsystemBase {
             SmartDashboard.putNumber("REV Mod " + mod.getModuleNumber() + " Velocity", mod.getState().speedMetersPerSecond); 
             SmartDashboard.putNumber("Gyro Yaw", gyro.getYaw());
         }
+/*NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+Sendable pose = table.getEntry("botpose");
+       SmartDashboard.putData("Limelight Pose", pose); */
     }
 }

@@ -37,9 +37,11 @@ public class RobotContainer {
     /* Driver Buttons */
     //private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton intake = new JoystickButton(operator, 1);
-    private final JoystickButton runFlywheel = new JoystickButton(operator, 2);
-    private final JoystickButton shootRoller = new JoystickButton(operator, 4);
-    private final JoystickButton ampScore = new JoystickButton(operator, 3);
+    private final JoystickButton runFlywheel = new JoystickButton(operator, 4);
+    private final JoystickButton shootRoller = new JoystickButton(operator, 3);
+    private final JoystickButton ampScore = new JoystickButton(operator, 2);
+    private final JoystickButton intakeRollers = new JoystickButton(operator, 5);
+
 
     private final JoystickButton temp1 = new JoystickButton(driver, 1);
     private final JoystickButton temp2 = new JoystickButton(driver, 2);
@@ -88,12 +90,6 @@ public class RobotContainer {
         //zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
         /* Operator Buttons */
-       /*   intake.onTrue(s_Flywheels.IntakeCommand());
-        intake.onFalse(s_Flywheels.StopFlywheels()); 
-        intake.onTrue(s_Flywheels.IntakeCommand());
-        intake.onTrue(s_Rollers.IntakeCommand());
-        intake.onFalse(s_Flywheels.StopFlywheels());
-        intake.onFalse(s_Rollers.StopDouble()); */
 
         runFlywheel.onTrue(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(2).andThen(s_Rollers.Shoot())))));
         runFlywheel.onFalse(s_Flywheels.StopFlywheels());
@@ -108,44 +104,22 @@ public class RobotContainer {
 
         povDown.onTrue(s_Climb.Retract());
         povDown.onFalse(s_Climb.StopClimb());
-
-        // shootRoller.onTrue(new ParallelCommandGroup(s_Flywheels.RunFlywheels()
-        //                         .alongWith(s_Arm.armToSpeakerCommand()
-        //                         .andThen(s_Rollers.Shoot()))));
-        // shootRoller.onFalse(s_Arm.stopArm());
-        // shootRoller.onFalse(s_Rollers.StopDouble());
-        // shootRoller.onFalse(s_Flywheels.StopFlywheels());
-
-        // runFlywheel.onTrue(new SequentialCommandGroup(s_Arm.armToAmpCommand()
-        //                         .andThen(s_Rollers.Shoot())));
-
-        // runFlywheel.onFalse(s_Arm.stopArm());
-        // runFlywheel.onFalse(s_Rollers.StopDouble());
        
                         
 
 
 
-       // intake.onTrue(s_Rollers.IntakeCommand());
-       // intake.onFalse(s_Rollers.StopDouble()); 
+        intakeRollers.onTrue(s_Rollers.IntakeCommand());
+        intakeRollers.onFalse(s_Rollers.StopDouble()); 
+        intakeRollers.onTrue(s_Flywheels.IntakeCommand());
+        intakeRollers.onFalse(s_Flywheels.StopFlywheels());
 
 
-        temp4.whileTrue(s_Arm.armToSpeakerCommand());
-        temp4.onFalse(s_Arm.stopArm()); 
+        intake.whileTrue(new SequentialCommandGroup(s_Arm.armToIntakeCommand1()
+                ));
+        intake.onFalse(s_Arm.stopArm()); 
 
-        temp2.whileTrue(new ParallelCommandGroup((s_Arm.armToIntakeCommand1())));//.alongWith(new WaitCommand(2)).andThen(s_Arm.armtoIntakeCommand2())));
-        temp2.onFalse(s_Arm.stopArm()); 
-
-        temp1.onTrue(s_Arm.armtoIntakeCommand2());
-        temp1.onFalse(s_Arm.stopArm()); 
-        
-        temp3.onTrue(s_Arm.armToAmpCommand());
-        temp3.onTrue(s_Arm.armToAmpCommand());
-
-        
-    
-       intake.onTrue(s_Flywheels.IntakeCommand());
-       intake.onFalse(s_Flywheels.StopFlywheels());
+       
         
         s_Flywheels.hasNote.onFalse(s_Flywheels.IntakeCommand());
         s_Flywheels.hasNote.onFalse(s_Rollers.IntakeCommand());
