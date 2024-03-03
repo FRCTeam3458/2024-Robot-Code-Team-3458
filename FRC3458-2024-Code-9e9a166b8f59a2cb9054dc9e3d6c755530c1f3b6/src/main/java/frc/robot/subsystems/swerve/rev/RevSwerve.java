@@ -1,11 +1,14 @@
 package frc.robot.subsystems.swerve.rev;
 
 import frc.lib.math.GeometryUtils;
+import frc.robot.LimelightHelpers;
 import frc.robot.constants.RevSwerveConstants;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+
+import java.util.Optional;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -20,13 +23,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -34,9 +35,11 @@ public class RevSwerve extends SubsystemBase {
 
 
     public SwerveDriveOdometry swerveOdometry;
-public SwerveDrivePoseEstimator botPose;
+    public SwerveDrivePoseEstimator botPose;
     public SwerveModule[] mSwerveMods;
     public AHRS gyro;
+    private final Field2d m_field = new Field2d();
+    Optional<Alliance> ally = DriverStation.getAlliance();
     //public AutoBuilder autonomous;
 
 
@@ -55,7 +58,7 @@ public SwerveDrivePoseEstimator botPose;
         };
 
         swerveOdometry = new SwerveDriveOdometry(RevSwerveConfig.swerveKinematics, getYaw(), getModulePositions());
-botPose = new SwerveDrivePoseEstimator(RevSwerveConfig.swerveKinematics, getYaw(), getModulePositions(), getPose());
+        botPose = new SwerveDrivePoseEstimator(RevSwerveConfig.swerveKinematics, getYaw(), getModulePositions(), getPose());
         zeroGyro();
 
       
@@ -151,13 +154,18 @@ botPose = new SwerveDrivePoseEstimator(RevSwerveConfig.swerveKinematics, getYaw(
         return (RevSwerveConfig.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getYaw()) : Rotation2d.fromDegrees(gyro.getYaw());
     }
 
-    public Pose2d getVisionPose(){
-        return getPose();
+    public SwerveDrivePoseEstimator addVisionPose() {
+        if(ally.get() == Alliance.Blue){
+        botPose.addVisionMeasurement(LimelightHelpers.getBotPose2d_wpiBlue("limelight"), Timer.getFPGATimestamp());
+        }
+        else if(ally.get()==Alliance.Red){
+        botPose.addVisionMeasurement(LimelightHelpers.getBotPose2d_wpiRed("limelight"), Timer.getFPGATimestamp());
+        }
+        return botPose;
     }
 
-    public SwerveDrivePoseEstimator addVisionPose() {
-        botPose.addVisionMeasurement(getPose(), Timer.getFPGATimestamp());
-        return botPose;
+    public Pose2d robotPose() {
+        return botPose.getEstimatedPosition();
     }
     
     @Override
@@ -168,9 +176,12 @@ botPose = new SwerveDrivePoseEstimator(RevSwerveConfig.swerveKinematics, getYaw(
             SmartDashboard.putNumber("REV Mod " + mod.getModuleNumber() + " Velocity", mod.getState().speedMetersPerSecond); 
             SmartDashboard.putNumber("Gyro Yaw", gyro.getYaw());
         }
-/*NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-Sendable pose = table.getEntry("botpose");
-       SmartDashboard.putData("Limelight Pose", pose); */
+
+        
+        SmartDashboard.putData("Field", m_field);
+        //m_field.setRobotPose(swerveOdometry.getPoseMeters());
+        m_field.setRobotPose(robotPose());
+
     }
 
     
