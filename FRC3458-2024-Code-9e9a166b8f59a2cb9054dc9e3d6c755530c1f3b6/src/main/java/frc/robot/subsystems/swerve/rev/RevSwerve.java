@@ -1,7 +1,5 @@
 package frc.robot.subsystems.swerve.rev;
 
-
-
 import frc.lib.math.GeometryUtils;
 import frc.robot.constants.RevSwerveConstants;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -10,6 +8,11 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 import com.kauailabs.navx.frc.AHRS;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -21,6 +24,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,6 +37,7 @@ public class RevSwerve extends SubsystemBase {
 public SwerveDrivePoseEstimator botPose;
     public SwerveModule[] mSwerveMods;
     public AHRS gyro;
+    //public AutoBuilder autonomous;
 
 
 
@@ -52,6 +57,9 @@ public SwerveDrivePoseEstimator botPose;
         swerveOdometry = new SwerveDriveOdometry(RevSwerveConfig.swerveKinematics, getYaw(), getModulePositions());
 botPose = new SwerveDrivePoseEstimator(RevSwerveConfig.swerveKinematics, getYaw(), getModulePositions(), getPose());
         zeroGyro();
+
+      
+
 
     }
     private static ChassisSpeeds correctForDynamics(ChassisSpeeds originalSpeeds) {
@@ -151,7 +159,7 @@ botPose = new SwerveDrivePoseEstimator(RevSwerveConfig.swerveKinematics, getYaw(
         botPose.addVisionMeasurement(getPose(), Timer.getFPGATimestamp());
         return botPose;
     }
-
+    
     @Override
     public void periodic() {
         for(SwerveModule mod : mSwerveMods) {
@@ -164,4 +172,6 @@ botPose = new SwerveDrivePoseEstimator(RevSwerveConfig.swerveKinematics, getYaw(
 Sendable pose = table.getEntry("botpose");
        SmartDashboard.putData("Limelight Pose", pose); */
     }
+
+    
 }
