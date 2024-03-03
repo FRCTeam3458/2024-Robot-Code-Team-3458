@@ -98,10 +98,9 @@ public class RobotContainer {
             )
         ); 
 
-         //s_Flywheels.setDefaultCommand(s_Flywheels.StopFlywheels());
-      // s_Rollers.setDefaultCommand(s_Rollers.StopDouble()); 
-       // s_Rollers.setDefaultCommand(s_Rollers.setRollerSpeed(0));
-
+         s_Flywheels.setDefaultCommand(s_Flywheels.StopFlywheels());
+         s_Rollers.setDefaultCommand(s_Rollers.StopDouble()); 
+         
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -131,20 +130,15 @@ public class RobotContainer {
 
         povDown.onTrue(s_Climb.Retract());
         povDown.onFalse(s_Climb.StopClimb());
-       
-                        
-
-
 
         intakeRollers.onTrue(s_Rollers.IntakeCommand());
         intakeRollers.onFalse(s_Rollers.StopDouble()); 
         intakeRollers.onTrue(s_Flywheels.IntakeCommand());
         intakeRollers.onFalse(s_Flywheels.StopFlywheels());
 
-
-        intake.whileTrue(new SequentialCommandGroup(s_Arm.armToIntakeCommand1()
-                ));
+        intake.whileTrue(new SequentialCommandGroup(s_Arm.armToIntakeCommand1()));
         intake.onFalse(s_Arm.stopArm()); 
+
 
        /* 
         
