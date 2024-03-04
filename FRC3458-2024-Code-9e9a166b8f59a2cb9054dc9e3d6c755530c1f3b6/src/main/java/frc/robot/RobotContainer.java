@@ -2,20 +2,17 @@ package frc.robot;
 
 
 
-import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*;
 import frc.robot.subsystems.swerve.rev.RevSwerve;
 import frc.robot.subsystems.Rollers;
@@ -45,7 +42,8 @@ public class RobotContainer {
     private final int strafeAxis = XboxController.Axis.kLeftX.value;
 
     /* Driver Buttons */
-    //private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
+    private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
+    
     private final JoystickButton intake = new JoystickButton(operator, 1);
     private final JoystickButton runFlywheel = new JoystickButton(operator, 4);
     private final JoystickButton shootRoller = new JoystickButton(operator, 3);
@@ -55,7 +53,7 @@ public class RobotContainer {
 
     private final JoystickButton temp1 = new JoystickButton(driver, 1);
     private final JoystickButton temp2 = new JoystickButton(driver, 2);
-    private final JoystickButton temp3 = new JoystickButton(driver, 3);
+    private final JoystickButton speakerAlign = new JoystickButton(driver, 3);
     private final JoystickButton temp4 = new JoystickButton(driver, 4);
 
     private final POVButton povUp = new POVButton(operator, 0);
@@ -67,6 +65,9 @@ public class RobotContainer {
     private final Rollers s_Rollers = new Rollers();
     private final Arm s_Arm = new Arm();
     private final Climb s_Climb = new Climb();
+
+    /* PIDs */
+    private final PIDController speakerAlignLR = new PIDController(0.0, 0.0, 0.0);
 
 //     private final SendableChooser<Command> autoChooser;
 
@@ -100,7 +101,10 @@ public class RobotContainer {
 
          s_Flywheels.setDefaultCommand(s_Flywheels.StopFlywheels());
          s_Rollers.setDefaultCommand(s_Rollers.StopDouble()); 
+         s_Climb.setDefaultCommand(s_Climb.StopClimb());
+         s_Arm.setDefaultCommand(s_Arm.armFloatingCommand());
          
+         speakerAlignLR.setTolerance(0.5);
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -113,7 +117,7 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        //zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
         /* Operator Buttons */
 
@@ -139,6 +143,12 @@ public class RobotContainer {
         intake.whileTrue(new SequentialCommandGroup(s_Arm.armToIntakeCommand1()));
         intake.onFalse(s_Arm.stopArm()); 
 
+        speakerAlign.whileTrue(new TeleopSwerve(s_Swerve, 
+        () -> driver.getRawAxis(translationAxis), 
+        () -> driver.getRawAxis(strafeAxis), 
+        () -> speakerAlignLR.calculate(LimelightHelpers.getTX("limelight"), 0), 
+        () -> false
+        ));
 
        /* 
         

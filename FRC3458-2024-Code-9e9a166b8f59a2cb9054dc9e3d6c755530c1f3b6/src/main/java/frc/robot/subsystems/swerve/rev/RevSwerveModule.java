@@ -11,10 +11,7 @@ import frc.lib.util.swerveUtil.RevSwerveModuleConstants;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 
 
-import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.hardware.CANcoder;
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
