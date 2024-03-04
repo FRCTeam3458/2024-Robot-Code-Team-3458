@@ -117,23 +117,23 @@ public class RobotContainer {
 
         /* Operator Buttons */
 
-        runFlywheel.onTrue(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(2).andThen(s_Rollers.Shoot())))));
+        runFlywheel.whileTrue(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(2).andThen(s_Rollers.Shoot())))));
         runFlywheel.onFalse(s_Flywheels.StopFlywheels());
         runFlywheel.onFalse(s_Rollers.StopDouble());
         runFlywheel.onFalse(s_Arm.stopArm());
 
-        ampScore.onTrue(new ParallelCommandGroup(s_Arm.armToAmpCommand().alongWith(new WaitCommand(1.7).andThen(s_Rollers.IntakeCommand()))));
+        ampScore.whileTrue(new ParallelCommandGroup(s_Arm.armToAmpCommand().alongWith(new WaitCommand(1.7).andThen(s_Rollers.IntakeCommand()))));
         ampScore.onFalse(s_Rollers.StopDouble());
 
-        povUp.onTrue(s_Climb.Extend());
+        povUp.whileTrue(s_Climb.Extend());
         povUp.onFalse(s_Climb.StopClimb());
 
-        povDown.onTrue(s_Climb.Retract());
+        povDown.whileTrue(s_Climb.Retract());
         povDown.onFalse(s_Climb.StopClimb());
 
-        intakeRollers.onTrue(s_Rollers.IntakeCommand());
+        intakeRollers.whileTrue(s_Rollers.IntakeCommand());
         intakeRollers.onFalse(s_Rollers.StopDouble()); 
-        intakeRollers.onTrue(s_Flywheels.IntakeCommand());
+        intakeRollers.whileTrue(s_Flywheels.IntakeCommand());
         intakeRollers.onFalse(s_Flywheels.StopFlywheels());
 
         intake.whileTrue(new SequentialCommandGroup(s_Arm.armToIntakeCommand1()));
