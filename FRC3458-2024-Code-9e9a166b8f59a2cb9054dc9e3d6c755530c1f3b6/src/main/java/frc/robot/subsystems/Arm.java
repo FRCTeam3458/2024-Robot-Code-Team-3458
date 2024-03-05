@@ -35,7 +35,7 @@ public class Arm extends SubsystemBase {
     armMotor.set(armController.calculate(armEncoder.getPosition(), -0.4)))
     .withName("Float Arm");
   }
-
+ 
   public Command armToAmpCommand() {
     return run(() -> 
       armMotor.set(armController.calculate(armEncoder.getPosition(), -0.75)))
