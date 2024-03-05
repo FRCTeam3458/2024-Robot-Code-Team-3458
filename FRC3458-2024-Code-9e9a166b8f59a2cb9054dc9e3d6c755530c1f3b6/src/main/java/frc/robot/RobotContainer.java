@@ -44,11 +44,11 @@ public class RobotContainer {
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     
-    private final JoystickButton intake = new JoystickButton(operator, 1);
+    private final JoystickButton intakePOS = new JoystickButton(operator, 1);
     private final JoystickButton runFlywheel = new JoystickButton(operator, 4);
     private final JoystickButton shootRoller = new JoystickButton(operator, 3);
     private final JoystickButton ampScore = new JoystickButton(operator, 2);
-    private final JoystickButton intakeRollers = new JoystickButton(operator, 5);
+    private final JoystickButton intake = new JoystickButton(operator, 5);
 
 
     private final JoystickButton temp1 = new JoystickButton(driver, 1);
@@ -135,11 +135,6 @@ public class RobotContainer {
         povDown.whileTrue(s_Climb.Retract());
         povDown.onFalse(s_Climb.StopClimb());
 
-        intakeRollers.whileTrue(s_Rollers.IntakeCommand());
-        intakeRollers.onFalse(s_Rollers.StopDouble()); 
-        intakeRollers.whileTrue(s_Flywheels.IntakeCommand());
-        intakeRollers.onFalse(s_Flywheels.StopFlywheels());
-
         intake.whileTrue(new SequentialCommandGroup(s_Arm.armToIntakeCommand1()));
         intake.onFalse(s_Arm.stopArm()); 
 
@@ -150,12 +145,8 @@ public class RobotContainer {
         () -> false
         ));
 
-       /* 
-        
-        s_Flywheels.hasNote.onFalse(s_Flywheels.IntakeCommand());
-        s_Flywheels.hasNote.onFalse(s_Rollers.IntakeCommand());
-        s_Flywheels.hasNote.onTrue(s_Flywheels.StopFlywheels());
-        s_Flywheels.hasNote.onTrue(s_Rollers.StopDouble()); */
+        intake.whileTrue(s_Flywheels.IntakeCommand());
+        intake.and(s_Flywheels.hasNote).whileTrue(s_Rollers.IntakeCommand());
 
 
         
