@@ -19,6 +19,7 @@ import frc.robot.subsystems.Rollers;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Flywheels;
+import frc.robot.subsystems.AutoPiecePickUp;
 
 
 
@@ -52,7 +53,7 @@ public class RobotContainer {
 
 
     private final JoystickButton temp1 = new JoystickButton(driver, 1);
-    private final JoystickButton temp2 = new JoystickButton(driver, 2);
+    private final JoystickButton noteAlign = new JoystickButton(driver, 2);
     private final JoystickButton speakerAlign = new JoystickButton(driver, 3);
     private final JoystickButton temp4 = new JoystickButton(driver, 4);
 
@@ -68,6 +69,7 @@ public class RobotContainer {
 
     /* PIDs */
     private final PIDController speakerAlignLR = new PIDController(0.0, 0.0, 0.0);
+    private final PIDController noteAlignLR = new PIDController(0.0, 0.0, 0.0);
 
 //     private final SendableChooser<Command> autoChooser;
 
@@ -138,12 +140,19 @@ public class RobotContainer {
         intake.whileTrue(new SequentialCommandGroup(s_Arm.armToIntakeCommand1()));
         intake.onFalse(s_Arm.stopArm()); 
 
-        speakerAlign.whileTrue(new TeleopSwerve(s_Swerve, 
+        speakerAlign.whileTrue(
+          new TeleopSwerve(s_Swerve, 
         () -> driver.getRawAxis(translationAxis), 
         () -> driver.getRawAxis(strafeAxis), 
         () -> speakerAlignLR.calculate(LimelightHelpers.getTX("limelight"), 0), 
         () -> false
         ));
+        noteAlign.whileTrue(new TeleopSwerve(s_Swerve, 
+          () -> driver.getRawAxis(translationAxis), 
+          () -> driver.getRawAxis(strafeAxis), 
+          () -> (noteAlignLR.calculate(0, 0)), 
+          () -> false
+  ));
 
         intake.whileTrue(s_Flywheels.IntakeCommand());
         intake.and(s_Flywheels.hasNote).whileTrue(s_Rollers.IntakeCommand());

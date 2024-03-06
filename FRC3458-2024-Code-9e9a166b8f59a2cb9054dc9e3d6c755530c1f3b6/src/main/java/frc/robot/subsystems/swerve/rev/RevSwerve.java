@@ -148,9 +148,11 @@ public class RevSwerve extends SubsystemBase {
 
     public SwerveDrivePoseEstimator addVisionPose() {
         if(ally.get() == Alliance.Blue){
+            LimelightHelpers.setPipelineIndex("limelight", 0);
         botPose.addVisionMeasurement(LimelightHelpers.getBotPose2d_wpiBlue("limelight"), Timer.getFPGATimestamp());
         }
         else if(ally.get()==Alliance.Red){
+            LimelightHelpers.setPipelineIndex("limelight", 0);
         botPose.addVisionMeasurement(LimelightHelpers.getBotPose2d_wpiRed("limelight"), Timer.getFPGATimestamp());
         }
         return botPose;

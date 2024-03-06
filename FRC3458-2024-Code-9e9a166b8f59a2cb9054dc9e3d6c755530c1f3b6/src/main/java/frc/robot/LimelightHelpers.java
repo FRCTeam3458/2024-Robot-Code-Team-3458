@@ -777,4 +777,9 @@ public class LimelightHelpers {
 
         return results;
     }
+
+    public static Pose2d getBotPoseEstimate_wpiBlue(String string) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getBotPoseEstimate_wpiBlue'");
+    }
 }
