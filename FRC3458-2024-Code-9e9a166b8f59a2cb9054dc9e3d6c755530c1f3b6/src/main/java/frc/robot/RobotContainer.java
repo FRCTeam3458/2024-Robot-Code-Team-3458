@@ -37,8 +37,6 @@ public class RobotContainer {
     private final Joystick driver = new Joystick(0);
     private final Joystick operator = new Joystick(1);
 
-    //private final DigitalInput noteSensor = new DigitalInput(1);
-
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
     private final int strafeAxis = XboxController.Axis.kLeftX.value;
