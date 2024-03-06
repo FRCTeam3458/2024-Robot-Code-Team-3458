@@ -4,8 +4,12 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathConstraints;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -49,7 +53,6 @@ public class RobotContainer {
     
     private final JoystickButton intakePOS = new JoystickButton(operator, 1);
     private final JoystickButton runFlywheel = new JoystickButton(operator, 4);
-    private final JoystickButton shootRoller = new JoystickButton(operator, 3);
     private final JoystickButton ampScore = new JoystickButton(operator, 2);
     private final JoystickButton intake = new JoystickButton(operator, 5);
 
@@ -153,6 +156,18 @@ public class RobotContainer {
 
         intake.whileTrue(s_Flywheels.IntakeCommand());
         intake.and(s_Flywheels.hasNote).whileTrue(s_Rollers.IntakeCommand());
+
+
+
+            SmartDashboard.putData("Pathfind to Pickup Pos", AutoBuilder.pathfindToPose(
+      new Pose2d(1.8, 7.6, Rotation2d.fromDegrees(270)), 
+      new PathConstraints(
+        4.0, 4.0, 
+        Units.degreesToRadians(360), Units.degreesToRadians(540)
+      ), 
+      0, 
+      2.0
+    ));
 
 SmartDashboard.putNumber("Align PID", (speakerAlignLR.calculate(LimelightHelpers.getTX("limelight"), 0))*0.01);
           
