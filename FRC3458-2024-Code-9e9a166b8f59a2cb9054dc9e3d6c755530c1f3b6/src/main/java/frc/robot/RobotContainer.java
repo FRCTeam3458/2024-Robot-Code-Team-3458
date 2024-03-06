@@ -2,15 +2,19 @@ package frc.robot;
 
 
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -20,7 +24,6 @@ import frc.robot.subsystems.Rollers;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Flywheels;
-import frc.robot.subsystems.AutoPiecePickUp;
 
 
 
@@ -70,19 +73,15 @@ public class RobotContainer {
     private final PIDController speakerAlignLR = new PIDController(1.0, 0.0, 0.03);
     private final PIDController noteAlignLR = new PIDController(0.0, 0.0, 0.0);
 
-//     private final SendableChooser<Command> autoChooser;
+    /* Autonomous */
 
     
-//     // ...
+    private final SendableChooser<Command> autoChooser;
 
-//     // Build an auto chooser. This will use Commands.none() as the default option.
-//     autoChooser = AutoBuilder.buildAutoChooser();
+      //  NamedCommands.registerCommand("intake", s_Flywheels.IntakeCommand());
 
-//     // Another option that allows you to specify the default auto by its name
-//     // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
 
-//     SmartDashboard.putData("Auto Chooser", autoChooser);
-//   }
+  
 
   
 
@@ -108,6 +107,12 @@ public class RobotContainer {
          speakerAlignLR.setTolerance(0.5);
         // Configure the button bindings
         configureButtonBindings();
+
+        autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
+        SmartDashboard.putData("Auto Mode", autoChooser);
+        NamedCommands.registerCommand("intake", s_Arm.armToIntakeCommand1().alongWith(new WaitCommand(1).andThen(s_Arm.stopArm()).andThen(s_Flywheels.IntakeCommand()).alongWith(new WaitCommand(0.8)).andThen(s_Flywheels.StopFlywheels())));
+
+
     }
 
     /**
@@ -136,8 +141,8 @@ public class RobotContainer {
         povDown.whileTrue(s_Climb.Retract());
         povDown.onFalse(s_Climb.StopClimb());
 
-        intake.whileTrue(new SequentialCommandGroup(s_Arm.armToIntakeCommand1()));
-        intake.onFalse(s_Arm.stopArm()); 
+        intakePOS.whileTrue(new SequentialCommandGroup(s_Arm.armToIntakeCommand1()));
+        intakePOS.onFalse(s_Arm.stopArm()); 
 
         speakerAlign.whileTrue(new TeleopSwerve(s_Swerve, 
         () -> driver.getRawAxis(translationAxis), 
@@ -150,23 +155,18 @@ public class RobotContainer {
         intake.and(s_Flywheels.hasNote).whileTrue(s_Rollers.IntakeCommand());
 
 SmartDashboard.putNumber("Align PID", (speakerAlignLR.calculate(LimelightHelpers.getTX("limelight"), 0))*0.01);
-        
-        
-        
-       
-        
-        
+          
     }
 
-    public class DriveSubsystem extends SubsystemBase {
-  public DriveSubsystem() {
+   //public class DriveSubsystem extends SubsystemBase {
+  //public DriveSubsystem() {
     // All other subsystem initialization
     // ...
 
     // Configure AutoBuilder last
     
-  }
-}
+  //}
+//}
 
 
 
@@ -175,9 +175,8 @@ SmartDashboard.putNumber("Align PID", (speakerAlignLR.calculate(LimelightHelpers
      *
      * @return the command to run in autonomous
      */
-    //public Command getAutonomousCommand() {
-        
-       // return new PathPlannerAuto("3Goofy");
-  //  }
+    public Command getAutonomousCommand() {
+        return autoChooser.getSelected();
+    }
     
 }
