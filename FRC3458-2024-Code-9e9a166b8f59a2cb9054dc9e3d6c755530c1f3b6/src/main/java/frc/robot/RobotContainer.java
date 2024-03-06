@@ -6,6 +6,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -68,7 +69,7 @@ public class RobotContainer {
     private final Climb s_Climb = new Climb();
 
     /* PIDs */
-    private final PIDController speakerAlignLR = new PIDController(0.0, 0.0, 0.0);
+    private final PIDController speakerAlignLR = new PIDController(1.0, 0.0, 0.03);
     private final PIDController noteAlignLR = new PIDController(0.0, 0.0, 0.0);
 
 //     private final SendableChooser<Command> autoChooser;
@@ -140,24 +141,17 @@ public class RobotContainer {
         intake.whileTrue(new SequentialCommandGroup(s_Arm.armToIntakeCommand1()));
         intake.onFalse(s_Arm.stopArm()); 
 
-        speakerAlign.whileTrue(
-          new TeleopSwerve(s_Swerve, 
+        speakerAlign.whileTrue(new TeleopSwerve(s_Swerve, 
         () -> driver.getRawAxis(translationAxis), 
         () -> driver.getRawAxis(strafeAxis), 
         () -> speakerAlignLR.calculate(LimelightHelpers.getTX("limelight"), 0), 
         () -> false
         ));
-        noteAlign.whileTrue(new TeleopSwerve(s_Swerve, 
-          () -> driver.getRawAxis(translationAxis), 
-          () -> driver.getRawAxis(strafeAxis), 
-          () -> (noteAlignLR.calculate(0, 0)), 
-          () -> false
-  ));
 
         intake.whileTrue(s_Flywheels.IntakeCommand());
         intake.and(s_Flywheels.hasNote).whileTrue(s_Rollers.IntakeCommand());
 
-
+SmartDashboard.putNumber("Align PID", (speakerAlignLR.calculate(LimelightHelpers.getTX("limelight"), 0))*0.01);
         
         
         
