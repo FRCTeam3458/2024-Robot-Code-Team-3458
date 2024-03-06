@@ -159,7 +159,7 @@ public class RobotContainer {
 
 
 
-            SmartDashboard.putData("Pathfind to Pickup Pos", AutoBuilder.pathfindToPose(
+            SmartDashboard.putData("Pathfind to Amp Pos", AutoBuilder.pathfindToPose(
       new Pose2d(1.8, 7.6, Rotation2d.fromDegrees(270)), 
       new PathConstraints(
         4.0, 4.0, 

@@ -6,6 +6,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "scoreAmp"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Inner Initial"
@@ -14,7 +20,7 @@
         {
           "type": "named",
           "data": {
-            "name": "scoreSpeaker"
+            "name": "intake"
           }
         },
         {
