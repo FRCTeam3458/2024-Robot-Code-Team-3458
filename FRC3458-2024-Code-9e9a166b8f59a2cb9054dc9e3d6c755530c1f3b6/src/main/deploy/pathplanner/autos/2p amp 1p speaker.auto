@@ -12,6 +12,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "raiseArmToAmp"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "score 1"
@@ -20,7 +26,13 @@
         {
           "type": "named",
           "data": {
-            "name": "scoreSpeaker"
+            "name": "scoreAmp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "armToIntakePose"
           }
         },
         {
@@ -36,6 +48,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "raiseArmToAmp"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "score 3"
@@ -44,7 +62,13 @@
         {
           "type": "named",
           "data": {
-            "name": "scoreSpeaker"
+            "name": "scoreAmp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "armToIntakePose"
           }
         },
         {
@@ -60,6 +84,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "raiseArmToSpeaker"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "score 5"
@@ -69,6 +99,12 @@
           "type": "named",
           "data": {
             "name": "scoreSpeaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "armFloat"
           }
         }
       ]

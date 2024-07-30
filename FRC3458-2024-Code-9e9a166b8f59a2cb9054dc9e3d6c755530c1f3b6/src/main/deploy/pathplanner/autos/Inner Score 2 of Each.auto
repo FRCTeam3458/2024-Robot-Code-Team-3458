@@ -8,7 +8,7 @@
         {
           "type": "named",
           "data": {
-            "name": "scoreAmp"
+            "name": "raiseArmToAmp"
           }
         },
         {
@@ -20,7 +20,13 @@
         {
           "type": "named",
           "data": {
-            "name": "intake"
+            "name": "scoreAmp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "armToIntakePose"
           }
         },
         {
@@ -36,6 +42,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "raiseArmToAmp"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Inner Score 1"
@@ -45,6 +57,12 @@
           "type": "named",
           "data": {
             "name": "scoreAmp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "armToIntakePose"
           }
         },
         {
@@ -60,6 +78,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "raiseArmToSpeaker"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Inner Score 3"
@@ -69,6 +93,12 @@
           "type": "named",
           "data": {
             "name": "scoreSpeaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "armToIntakePose"
           }
         },
         {
@@ -84,6 +114,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "raiseArmToSpeaker"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Inner Score 4"
@@ -93,6 +129,12 @@
           "type": "named",
           "data": {
             "name": "scoreSpeaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "armFloat"
           }
         }
       ]
